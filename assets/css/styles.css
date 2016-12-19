@@ -1,10 +1,9 @@
-.text1 {
+text1 {
   font-size: 12px;
   
  }
  head {
     margin: 1em 0 2em;
-    color: #196E76;
 }
 head h1 {
   font-family: 'Pacifico', serif;
