@@ -2,11 +2,11 @@
   font-size: 12px;
   
  }
- header {
+ head {
     margin: 1em 0 2em;
     color: #196E76;
 }
-header h1 {
+head h1 {
   font-family: 'Pacifico', serif;
 }
 img {
