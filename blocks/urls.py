@@ -20,6 +20,11 @@ from django.contrib import admin
 from home import views
 
 urlpatterns = [
-    url(r'^$', views.index),
+    url(r'^$', views.view_index),
+    url(r'^login/', views.view_login),
+    url(r'^logout/', views.view_logout),
+    url(r'^register/', views.view_register),
+    url(r'^home/', views.view_home),
+    url(r'^update/', views.view_update),
     url(r'^admin/', admin.site.urls),
 ]

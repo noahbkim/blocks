@@ -71,7 +71,7 @@ def edit_block(user, datetime, activity):
     if block:
         block.activity = activity
         return block
-    return Block._create_block(user, datetime, activity)
+    return _create_block(user, datetime, activity)
 
 
 @to_tens
@@ -81,6 +81,14 @@ def get_block(user, datetime):
     datetime = tens(datetime)
     return Block.objects.filter(user=user, datetime=datetime).first()
 
+
+def get_blocks(user, date):
+    """Get a set of blocks for a day."""
+
+    today = dt.datetime(date.year, date.month, date.day)
+    tomorrow = dt.datetime(date.year, date.month, date.day+1)
+
+    return Block.objects.filter(user=user, datetime__gte=today, datetime__lt=tomorrow).all()
 
 @to_tens
 def delete_block(user, datetime):

@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+  <form action="/login/" method="post">
+    {% csrf_token %}
+    Username: <br><input type="text" name="username"><br>
+    Password: <br><input type="password" name="password"><br>
+    <input type="checkbox" name="rememberUsername" value="rememberUsername">Remember my username<br>
+    <input type="submit">Log in</button>
+  </form>
+</html>
