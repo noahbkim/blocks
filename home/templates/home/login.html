@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
+  <style>
+    loginform {
+      text-align = "center";
+  </style>
   <form action="/login/" method="post" class="loginform">
     {% csrf_token %}
     Username: <br><input type="text" name="username"><br>
     Password: <br><input type="password" name="password"><br>
     <input type="checkbox" name="rememberUsername" value="rememberUsername">Remember my username<br>
-    <input type="submit">Log in</button>
+    <button onclick = "login(username, password, rememberUsername)">Log in</button>
   </form>
 </html>
