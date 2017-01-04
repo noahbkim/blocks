@@ -1,9 +1,35 @@
 body {
     width: 720px;
-    margin: 2em auto;
+    margin: 4em auto;
 }
 
 .container {
-
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-grow: 1;
 }
 
+.block {
+    margin: 10px;
+    display: inline-flex;
+    width: 120px;
+    height: 120px;
+    border: 2px solid black;
+    border-radius: 15px;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.block-add {
+}
+
+.block-inside .time, .block-inside .activity {
+    display: block;
+}
+
+.block-inside .time {
+    margin-bottom: 3px;
+}

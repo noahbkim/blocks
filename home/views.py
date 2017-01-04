@@ -51,12 +51,18 @@ def view_home(request):
     """Blocks index page."""
 
     today = datetime.date.today()
-    blocks = models.get_blocks(request.user, today)
-
-    return render(request, "home/home.html", {"blocks": blocks, "today": today.strftime("%B %d, %Y")})
+    return render(request, "home/home.html", {"today": today.strftime("%B %d, %Y")})
 
 
-def view_update(request):
+@login_required(login_url="/login/")
+def update(request):
+    """Update the user's blocks for the day."""
+
+    print(request.POST)
+
+
+@login_required(login_url="/login/")
+def get(request):
     """Update the user's blocks for the day."""
 
     print(request.POST)
