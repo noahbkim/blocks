@@ -4,6 +4,12 @@ from django.contrib.auth.models import User
 import datetime as dt
 
 
+BLOCK_HTML = """\
+<span class="time">{}</span>
+<span class="activity">{}</span>\
+"""
+
+
 def tens(d: dt.datetime):
     """Round minutes of a datetime object to lower tens."""
 
@@ -48,6 +54,11 @@ class Block(models.Model):
     user = models.ForeignKey(User, related_name="blocks")
     datetime = models.DateTimeField()
     activity = models.ForeignKey(Activity)
+
+    def to_html(self):
+        """Represent the block as HTML."""
+
+        return BLOCK_HTML.format(self.datetime.strftime("%H:%M:%S"), self.activity.name)
 
 
 def _create_block(user, datetime, activity):

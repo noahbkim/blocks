@@ -1,35 +1,77 @@
 body {
-    width: 720px;
-    margin: 4em auto;
+    margin: 2em auto;
+    width: 950px;
 }
 
-.container {
+#container {
+    width: 600px;
+    margin-right: 2.5em;
+    float: left;
+}
+
+#blocks {
+    margin: auto;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    flex-grow: 1;
+    padding-bottom: 30px;
 }
 
-.block {
-    margin: 10px;
-    display: inline-flex;
-    width: 120px;
-    height: 120px;
-    border: 2px solid black;
-    border-radius: 15px;
+#blocks .block {
+    border: 1px solid black;
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    box-sizing: border-box;
+    margin-bottom: -1px;
+    margin-right: -1px;
+    line-height: 100px;
     text-align: center;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    cursor: pointer;
+    user-select: none;
 }
 
-.block-add {
+#blocks .block.selected {
+    background-color: lightblue;
 }
 
-.block-inside .time, .block-inside .activity {
-    display: block;
+#editor {
+    max-width: 310px;
+    float: left;
 }
 
-.block-inside .time {
-    margin-bottom: 3px;
+#selection {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#editor h1 { font-size: 35px; margin-top: 15px; margin-bottom: 5px; }
+#editor h2 { font-size: 25px; margin-top: 5px; }
+
+#selection-editor {
+    margin-top: 20px;
+}
+
+#selection:empty + #selection-editor {
+    display: none;
+}
+
+#selection-editor input {
+    width: 90%;
+    margin-top: 4px;
+    padding: 6px 3px;
+}
+
+.mini {
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    line-height: 50px;
+    display: inline-block;
+    border: 1px solid black;
+    margin-right: -1px;
+    margin-bottom: -1px;
+    background-color: lightblue;
 }

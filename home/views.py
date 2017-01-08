@@ -51,7 +51,12 @@ def view_home(request):
     """Blocks index page."""
 
     today = datetime.date.today()
-    return render(request, "home/home.html", {"today": today.strftime("%B %d, %Y")})
+    times = map(lambda x: (x // 6, x % 6), range(0, 24*6))
+    blocks = models.get_blocks(request.user, today)
+    return render(request, "home/home.html", {
+        "today": today.strftime("%B %d, %Y"),
+        "times": times,
+        "blocks": blocks})
 
 
 @login_required(login_url="/login/")
