@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 
 import datetime
+import json
 
 from home import models
 
@@ -60,14 +63,17 @@ def view_home(request):
 
 
 @login_required(login_url="/login/")
-def update(request):
-    """Update the user's blocks for the day."""
+@csrf_exempt
+def api(request):
+    """The request API."""
 
-    print(request.POST)
+    data = json.loads(request.body.decode())
+
+    return HttpResponse("{}")
 
 
-@login_required(login_url="/login/")
-def get(request):
-    """Update the user's blocks for the day."""
-
-    print(request.POST)
+"""
+set-activity
+  activity
+  blocks
+"""

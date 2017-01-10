@@ -26,10 +26,6 @@ class Block {
 }
 
 Block.all = [];
-Block.clearselect = function() {
-    for (let block of Block.all)
-        block.deselect();
-};
 
 class BlockSelection {
 
@@ -48,6 +44,11 @@ class BlockSelection {
                 this.element.appendChild(mini);
             }
         }
+    }
+
+    clear() {
+        for (let block of Block.all)
+            block.deselect();
     }
 
 }
@@ -86,7 +87,7 @@ class BlockManager {
                         else break;
                     }
                 } else if (!that.modifiers.control) {
-                    Block.clearselect();
+                    that.selection.clear();
                 }
                 block.select();
                 that.last = block;
@@ -95,6 +96,17 @@ class BlockManager {
         }
     }
 
+}
+
+function api(data, callback) {
+    let request = new XMLHttpRequest();
+    request.open("POST", "/api/");
+    request.setRequestHeader("Content-Type", "application/json");
+    request.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200)
+            callback(JSON.parse(this.responseText));
+    };
+    request.send(JSON.stringify(data));
 }
 
 window.onload = function() {
@@ -110,8 +122,5 @@ window.onload = function() {
     let editorElement = document.getElementById("editor");
     let blocksElement = document.getElementById("blocks");
     editorElement.style.left = blocksElement.getBoundingClientRect().right + 20;
-    //window.addEventListener("scroll", function(e) {
-    //    editorElement.style.marginTop = document.body.scrollTop + "px";
-    //});
 
 };
