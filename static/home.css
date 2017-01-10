@@ -17,7 +17,7 @@ body {
     padding-bottom: 30px;
 }
 
-#blocks .block {
+.block {
     border: 1px solid black;
     width: 100px;
     height: 100px;
@@ -31,13 +31,14 @@ body {
     user-select: none;
 }
 
-#blocks .block.selected {
+.block.selected {
     background-color: lightblue;
 }
 
 #editor {
     max-width: 310px;
     float: left;
+    position: fixed;
 }
 
 #selection {
@@ -74,4 +75,14 @@ body {
     margin-right: -1px;
     margin-bottom: -1px;
     background-color: lightblue;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+     -khtml-user-select: none; /* Konqueror */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  not supported by any browser */
 }

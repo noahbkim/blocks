@@ -9,7 +9,7 @@
         <div id="container">
             <div id="blocks">
                 {% for time in times %}
-                <div id="b_{{ time.0 }}_{{ time.1 }}" class="block" sort="{{ time.0 }}{{ time.1 }}">
+                <div id="b_{{ time.0 }}_{{ time.1 }}" class="block noselect" sort="{{ time.0 }}{{ time.1 }}">
                     {{ time.0 }}:{{ time.1 }}0
                 </div>
                 {% endfor %}

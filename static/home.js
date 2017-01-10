@@ -52,8 +52,8 @@ class BlockSelection {
 
 }
 
-const SHIFT = 16;
-const CONTROL = 17;
+const SHIFT = [16];
+const CONTROL = [17, 91];
 
 class BlockManager {
 
@@ -68,15 +68,15 @@ class BlockManager {
     bind() {
         let that = this;
         document.addEventListener("keydown", function(e) {
-            if (e.keyCode == SHIFT) that.modifiers.shift = true;
-            if (e.keyCode == CONTROL) that.modifiers.control = true;
+            if (SHIFT.indexOf(e.keyCode) > -1) that.modifiers.shift = true;
+            if (CONTROL.indexOf(e.keyCode) > -1) that.modifiers.control = true;
         });
         document.addEventListener("keyup", function(e) {
-            if (e.keyCode == SHIFT) that.modifiers.shift = false;
-            if (e.keyCode == CONTROL) that.modifiers.control = false;
+            if (SHIFT.indexOf(e.keyCode) > -1) that.modifiers.shift = false;
+            if (CONTROL.indexOf(e.keyCode) > -1) that.modifiers.control = false;
         });
         for (let block of this.blocks) {
-            block.element.addEventListener("click", function() {
+            block.element.addEventListener("click", function(e) {
                 if (that.modifiers.shift) {
                     let start = Block.all.indexOf(block);
                     let end = Block.all.indexOf(that.last);
@@ -107,8 +107,11 @@ window.onload = function() {
 
     manager.bind();
 
-    window.addEventListener("scroll", function(e) {
-        editorElement.style.marginTop = document.body.scrollTop + "px";
-    });
+    let editorElement = document.getElementById("editor");
+    let blocksElement = document.getElementById("blocks");
+    editorElement.style.left = blocksElement.getBoundingClientRect().right + 20;
+    //window.addEventListener("scroll", function(e) {
+    //    editorElement.style.marginTop = document.body.scrollTop + "px";
+    //});
 
 };
