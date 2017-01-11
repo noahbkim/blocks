@@ -6,6 +6,7 @@ from django.http import HttpResponse
 
 import datetime
 import json
+import random
 
 from home import models
 
@@ -55,11 +56,9 @@ def view_home(request):
 
     today = datetime.date.today()
     times = map(lambda x: (x // 6, x % 6), range(0, 24*6))
-    blocks = models.get_blocks(request.user, today)
     return render(request, "home/home.html", {
         "today": today.strftime("%B %d, %Y"),
-        "times": times,
-        "blocks": blocks})
+        "times": times})
 
 
 @login_required(login_url="/login/")
@@ -68,8 +67,24 @@ def api(request):
     """The request API."""
 
     data = json.loads(request.body.decode())
-
-    return HttpResponse("{}")
+    result = {}
+    if data["command"] == "set-blocks":
+        name = data["activity"].lower()
+        activity = models.Activity.objects.filter(name=name).first()
+        if not activity:
+            activity = models.Activity.objects.create(user=request.user, name=name)
+            activity.color = "#%06x" % random.randint(0, 0xFFFFFF)
+            activity.save()
+        for time in data["blocks"]:
+            today = datetime.date.today()
+            dt = datetime.datetime(today.year, today.month, today.day, *map(int, time.split(":")))
+            block = models.Block.objects.create(user=request.user, datetime=dt, activity=activity)
+            block.save()
+        result = {"result": "success"}
+    if data["command"] == "get-blocks":
+        blocks = models.get_blocks(request.user)
+        result.update({"blocks": list(map(lambda x: x.to_json(), blocks))})
+    return HttpResponse(json.dumps(result))
 
 
 """

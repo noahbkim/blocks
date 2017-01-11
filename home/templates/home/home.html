@@ -7,26 +7,18 @@
     </head>
     <body>
         <div id="container">
-            <div id="blocks">
-                {% for time in times %}
-                <div id="b_{{ time.0 }}_{{ time.1 }}" class="block noselect" sort="{{ time.0 }}{{ time.1 }}">
-                    {{ time.0 }}:{{ time.1 }}0
-                </div>
-                {% endfor %}
-            </div>
+            <table id="blocks">
+
+            </table>
         </div>
         <div id="editor">
             <h1>{{ request.user.username }}</h1>
             <h2>{{ today }}</h2>
             <span id="selection"></span>
             <div id="selection-editor">
-                <b>Activity</b>
-                <input type="text">
-                <button>Save</button>
-                <b class="space">Tags</b>
-                <ul>
-                    <li>No tags...</li>
-                </ul>
+                <b>Activity</b><br>
+                <input id="activity" type="text">
+                <button id="save" disabled="true">Save</button>
             </div>
         </div>
     </body>

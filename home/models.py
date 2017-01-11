@@ -4,12 +4,6 @@ from django.contrib.auth.models import User
 import datetime as dt
 
 
-BLOCK_HTML = """\
-<span class="time">{}</span>
-<span class="activity">{}</span>\
-"""
-
-
 def tens(d: dt.datetime):
     """Round minutes of a datetime object to lower tens."""
 
@@ -42,10 +36,15 @@ class Activity(models.Model):
     """An activity container."""
 
     name = models.CharField(max_length=60)
-    category = models.ForeignKey(Category)
-    tags = models.ManyToManyField(Tag)
-    color = models.CharField(max_length=7)
+    category = models.ForeignKey(Category, null=True)
+    tags = models.ManyToManyField(Tag, null=True)
+    color = models.CharField(max_length=7, null=True)
     user = models.ForeignKey(User, related_name="activites")
+
+    def to_json(self):
+        """Dump the block to JSON."""
+
+        return {"name": self.name, "color": self.color, }
 
 
 class Block(models.Model):
@@ -55,10 +54,10 @@ class Block(models.Model):
     datetime = models.DateTimeField()
     activity = models.ForeignKey(Activity)
 
-    def to_html(self):
-        """Represent the block as HTML."""
+    def to_json(self):
+        """Dump the block to JSON."""
 
-        return BLOCK_HTML.format(self.datetime.strftime("%H:%M:%S"), self.activity.name)
+        return {"time": self.datetime.strftime("%-H:%M"), "activity": self.activity.to_json()}
 
 
 def _create_block(user, datetime, activity):
@@ -93,7 +92,7 @@ def get_block(user, datetime):
     return Block.objects.filter(user=user, datetime=datetime).first()
 
 
-def get_blocks(user, date):
+def get_blocks(user, date=dt.date.today()):
     """Get a set of blocks for a day."""
 
     today = dt.datetime(date.year, date.month, date.day)

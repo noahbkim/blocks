@@ -11,10 +11,9 @@ body {
 
 #blocks {
     margin: auto;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
     padding-bottom: 30px;
+    border-collapse: collapse;
+    margin-bottom: 40px;
 }
 
 .block {
@@ -25,14 +24,13 @@ body {
     box-sizing: border-box;
     margin-bottom: -1px;
     margin-right: -1px;
-    line-height: 100px;
     text-align: center;
     cursor: pointer;
     user-select: none;
 }
 
 .block.selected {
-    background-color: lightblue;
+    background-color: lightblue !important;
 }
 
 #editor {
@@ -76,7 +74,7 @@ ul {
 #selection-editor input {
     width: 90%;
     margin-top: 4px;
-    padding: 6px 3px;
+    padding: 4px 2px;
 }
 
 .mini {

@@ -1,11 +1,11 @@
 class Block {
 
-    constructor(element) {
+    constructor(element, time) {
         this.element = element;
-        this.time = element.innerHTML.trim();
-        this.sort = element.sort;
+        this.time = time;
         this.selected = false;
         Block.all.push(this);
+        Block.lookup[time] = this;
     }
 
     select() {
@@ -23,9 +23,31 @@ class Block {
         else this.select();
     }
 
+    setActivity(activity) {
+        this.element.getElementsByClassName("activity")[0].innerHTML = activity.name;
+        this.element.style.backgroundColor = color(activity.color);
+        console.log(color(activity.color));
+    }
+
 }
 
 Block.all = [];
+Block.lookup = {};
+Block.all.selected = function() {
+    let selected = [];
+    for (let i = 0; i < Block.all.length; i++)
+        if (Block.all[i].selected)
+            selected.push(Block.all[i]);
+    return selected;
+};
+
+function color(value) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(value);
+    return ("rgba(" + parseInt(result[1], 16) +
+        ", " + parseInt(result[2], 16) +
+        ", " + parseInt(result[3], 16) +
+        ", " + 0.2 + ")");
+}
 
 class BlockSelection {
 
@@ -46,9 +68,10 @@ class BlockSelection {
         }
     }
 
-    clear() {
+    clear(except) {
         for (let block of Block.all)
-            block.deselect();
+            if (block != except)
+                block.deselect();
     }
 
 }
@@ -86,14 +109,35 @@ class BlockManager {
                         if (!Block.all[i].selected) Block.all[i].select();
                         else break;
                     }
-                } else if (!that.modifiers.control) {
-                    that.selection.clear();
+                } else {
+                    if (!that.modifiers.control) {
+                        that.selection.clear(block);
+                    }
+                    block.toggle();
                 }
-                block.select();
                 that.last = block;
                 that.selection.update();
             });
         }
+    }
+
+    getBlocks() {
+        api({"command": "get-blocks"}, function(result) {
+            for (let i = 0; i < result.blocks.length; i++) {
+                let data = result.blocks[i];
+                let block = Block.lookup[data.time];
+                block.setActivity(data.activity);
+            }
+        });
+    }
+
+    setBlocks() {
+        let activity = document.getElementById("activity").value.toLowerCase();
+        let selection = Block.all.selected().map(function(x) { return x.time; });
+        let that = this;
+        api({"command": "set-blocks", "activity": activity, "blocks": selection}, function(result) {
+            that.getBlocks();
+        })
     }
 
 }
@@ -113,14 +157,34 @@ window.onload = function() {
 
     let manager = new BlockManager();
 
-    let blockElements = document.getElementsByClassName("block");
-    for (let i = 0; i < blockElements.length; i++)
-        manager.blocks.push(new Block(blockElements[i]));
-
-    manager.bind();
+    let blocksElement = document.getElementById("blocks");
+    for (let h = 0; h < 24; h++) {
+        let row = document.createElement("tr");
+        for (let m = 0; m < 6; m++) {
+            let cell = document.createElement("td");
+            let time = h + ":" + m + "0";
+            cell.classList.add("block");
+            cell.classList.add("noselect");
+            cell.innerHTML = "<span class='time'>" + h + ":" + m + "0</span><br><span class='activity'></span>";
+            manager.blocks.push(new Block(cell, time));
+            row.appendChild(cell);
+        }
+        blocksElement.appendChild(row);
+    }
 
     let editorElement = document.getElementById("editor");
-    let blocksElement = document.getElementById("blocks");
     editorElement.style.left = blocksElement.getBoundingClientRect().right + 20;
+
+    let activityElement = document.getElementById("activity");
+    let saveElement = document.getElementById("save");
+    activityElement.addEventListener("input", function() {
+        saveElement.disabled = activityElement.value.trim() == "";
+    });
+    saveElement.addEventListener("click", function() {
+        manager.setBlocks();
+    });
+
+    manager.bind();
+    manager.getBlocks();
 
 };
