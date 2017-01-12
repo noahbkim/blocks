@@ -1,0 +1,27 @@
+form {
+    display: block;
+    width: 300px;
+    margin: auto;
+    margin-top: 5em;
+}
+
+form input[type="text"], form input[type="password"] {
+    width: 300px;
+    padding: 6px 10px;
+    border-radius: 5px;
+    border: 1px solid lightgray;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+form input[type="submit"] {
+    font-size: 16px;
+    padding: 6px 10px;
+    border-radius: 5px;
+    outline: none;
+    color: white;
+    background-color: #33b5e5;
+    border: none;
+    cursor: pointer;
+    float: right;
+}

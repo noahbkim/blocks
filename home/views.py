@@ -51,14 +51,27 @@ def view_logout(request):
 
 
 @login_required(login_url="/login/")
-def view_home(request):
+def view_home(request, date=None):
     """Blocks index page."""
 
+    if date == "":
+        date = None
+
     today = datetime.date.today()
+    day = today if date is None else datetime.datetime.strptime(date, "%Y%m%d").date()
+    tomorrow = None if day >= today else datetime.date(day.year, day.month, day.day + 1)
+    yesterday = datetime.date(day.year, day.month, day.day - 1)
+
     times = map(lambda x: (x // 6, x % 6), range(0, 24*6))
+
+    blocks = models.get_blocks(request.user, day)
     return render(request, "home/home.html", {
-        "today": today.strftime("%B %d, %Y"),
-        "times": times})
+        "today": day.strftime("%B %d, %Y"),
+        "times": times,
+        "blocks": blocks,
+        "tomorrow": None if not tomorrow else tomorrow.strftime("%Y%m%d"),
+        "yesterday": yesterday.strftime("%Y%m%d"),
+    })
 
 
 @login_required(login_url="/login/")
@@ -76,13 +89,19 @@ def api(request):
             activity.color = "#%06x" % random.randint(0, 0xFFFFFF)
             activity.save()
         for time in data["blocks"]:
-            today = datetime.date.today()
-            dt = datetime.datetime(today.year, today.month, today.day, *map(int, time.split(":")))
+            if "date" in data:
+                date = datetime.datetime.strptime(data["date"], "%Y%m%d").date()
+            else:
+                date = datetime.date.today()
+            dt = datetime.datetime(date.year, date.month, date.day, *map(int, time.split(":")))
             block = models.Block.objects.create(user=request.user, datetime=dt, activity=activity)
             block.save()
         result = {"result": "success"}
     if data["command"] == "get-blocks":
-        blocks = models.get_blocks(request.user)
+        date = {}
+        if "date" in data:
+            date["date"] = datetime.datetime.strptime(data["date"], "%Y%m%d").date()
+        blocks = models.get_blocks(request.user, **date)
         result.update({"blocks": list(map(lambda x: x.to_json(), blocks))})
     return HttpResponse(json.dumps(result))
 

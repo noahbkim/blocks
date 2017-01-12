@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <style>
-            loginform { text-align: center; }
-        </style>
+        <link rel="stylesheet" type="text/css" href="/static/login.css">
     </head>
     <body>
         <form action="/login/" method="post" class="loginform">
             {% csrf_token %}
-            Username: <br><input type="text" name="username"><br>
-            Password: <br><input type="password" name="password"><br>
-            <input type="checkbox" name="rememberUsername" value="rememberUsername">Remember my username<br>
+            <input type="text" name="username" placeholder="username">
+            <input type="password" name="password" placeholder="password">
             <input type="submit" value="Log in">
         </form>
     </body>

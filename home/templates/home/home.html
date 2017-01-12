@@ -13,7 +13,11 @@
         </div>
         <div id="editor">
             <h1>{{ request.user.username }}</h1>
-            <h2>{{ today }}</h2>
+            <h2>
+                {% if yesterday %}<a href="/home/{{ yesterday }}">&#x276e;</a>{% endif %}
+                {{ today }}
+                {% if tomorrow %}<a href="/home/{{ tomorrow }}">&#x276f;</a>{% endif %}
+            </h2>
             <span id="selection"></span>
             <div id="selection-editor">
                 <b>Activity</b><br>
