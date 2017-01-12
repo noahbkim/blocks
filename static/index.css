@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+body {
+    width: 100%;
+    text-align: center;
+    margin-top: 15vw;
+}
+
+h1 {
+    font-size: 60px;
+    margin-bottom: 0;
+}
+
+p {
+    width: 740px;
+    font-size: 21px;
+    margin: 0 auto;
+    margin-bottom: 2em;
+}
+
+button {
+    font-size: 24px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    outline: none;
+    color: white;
+    background-color: #33b5e5;
+    border: none;
+}
