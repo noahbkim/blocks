@@ -122,9 +122,11 @@ class BlockManager {
     }
 
     getBlocks() {
-        api({"command": "get-blocks"}, function(result) {
+        let date = window.location.href.split("/")[4];
+        api({"command": "get-blocks", "date": date}, function(result) {
             for (let i = 0; i < result.blocks.length; i++) {
                 let data = result.blocks[i];
+                console.log(data.time);
                 let block = Block.lookup[data.time];
                 block.setActivity(data.activity);
             }
@@ -173,7 +175,9 @@ window.onload = function() {
     }
 
     let editorElement = document.getElementById("editor");
-    editorElement.style.left = blocksElement.getBoundingClientRect().right + 20;
+    function repositionEditor() { editorElement.style.left = blocksElement.getBoundingClientRect().right + 20; }
+    repositionEditor();
+    window.onresize = function() { repositionEditor(); };
 
     let activityElement = document.getElementById("activity");
     let saveElement = document.getElementById("save");

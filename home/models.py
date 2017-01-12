@@ -57,7 +57,10 @@ class Block(models.Model):
     def to_json(self):
         """Dump the block to JSON."""
 
-        return {"time": self.datetime.strftime("%-H:%M"), "activity": self.activity.to_json()}
+        time = self.datetime.strftime("%H:%M")
+        if time[0] == "0":
+            time = time[1:]
+        return {"time": time, "activity": self.activity.to_json()}
 
 
 def _create_block(user, datetime, activity):
